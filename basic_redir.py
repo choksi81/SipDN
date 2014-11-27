@@ -104,7 +104,7 @@ try:
 
     # Create UDP transport which listens to any available port
     transport = lib.create_transport(pj.TransportType.UDP, 
-                                     pj.TransportConfig(0))
+                                     pj.TransportConfig(port=5060,bound_addr="",public_addr=""))
     print "\nListening on", transport.info().host, 
     print "port", transport.info().port, "\n"
    
