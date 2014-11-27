@@ -33,25 +33,18 @@ def log_cb(level, str, len):
 
 # Callback to receive events from account
 class MyAccountCallback(pj.AccountCallback):
-
     def __init__(self, account=None):
         pj.AccountCallback.__init__(self, account)
 
-    # Notification on incoming call
     def on_incoming_call(self, call):
         global current_call
         if current_call:
             call.answer(486, "Busy")
             return
-           
         print "Incoming call from ", call.info().remote_uri
-        print "Press 'a' to answer"
-
         current_call = call
-
         call_cb = MyCallCallback(current_call)
         current_call.set_callback(call_cb)
-
         current_call.answer(302)
 
        
@@ -72,27 +65,6 @@ class MyCallCallback(pj.CallCallback):
         if self.call.info().state == pj.CallState.DISCONNECTED:
             current_call = None
             print 'Current call is', current_call
-
-    # Notification when call's media state has changed.
-    def on_media_state(self):
-        if self.call.info().media_state == pj.MediaState.ACTIVE:
-            # Connect the call to sound device
-            call_slot = self.call.info().conf_slot
-            pj.Lib.instance().conf_connect(call_slot, 0)
-            pj.Lib.instance().conf_connect(0, call_slot)
-            print "Media is now active"
-        else:
-            print "Media is inactive"
-
-# Function to make call
-def make_call(uri):
-    try:
-        print "Making call to", uri
-        return acc.make_call(uri, cb=MyCallCallback())
-    except pj.Error, e:
-        print "Exception: " + str(e)
-        return None
-       
 
 # Create library instance
 lib = pj.Lib()
@@ -115,47 +87,22 @@ try:
     acc = lib.create_account_for_transport(transport, cb=MyAccountCallback())
 
     # If argument is specified then make call to the URI
-    if len(sys.argv) > 1:
-        lck = lib.auto_lock()
-        current_call = make_call(sys.argv[1])
-        print 'Current call is', current_call
-        del lck
+    # if len(sys.argv) > 1:
+        # lck = lib.auto_lock()
+        # current_call = make_call(sys.argv[1])
+        # print 'Current call is', current_call
+        # del lck
 
     my_sip_uri = "sip:" + transport.info().host + \
                  ":" + str(transport.info().port)
 
-    # Menu loop
+    print "My SIP URI is", my_sip_uri
     while True:
-        print "My SIP URI is", my_sip_uri
-        print "Menu:  m=make call, h=hangup call, a=answer call, q=quit"
+        continue
+        #if not current_call:
+            #continue
+        #current_call.answer(302)
 
-        input = sys.stdin.readline().rstrip("\r\n")
-        if input == "m":
-            if current_call:
-                print "Already have another call"
-                continue
-            print "Enter destination URI to call: ", 
-            input = sys.stdin.readline().rstrip("\r\n")
-            if input == "":
-                continue
-            lck = lib.auto_lock()
-            current_call = make_call(input)
-            del lck
-
-        elif input == "h":
-            if not current_call:
-                print "There is no call"
-                continue
-            current_call.hangup()
-
-        elif input == "a":
-            if not current_call:
-                print "There is no call"
-                continue
-            current_call.answer(200)
-
-        elif input == "q":
-            break
 
     # Shutdown the library
     transport = None
