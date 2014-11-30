@@ -1,0 +1,26 @@
+SIP/2.0 302 Moved Temporarily
+
+Via: SIP/2.0/UDP 62.2.x.x:5060;branch=z9hG4bKtjjtl830982hmqr9f6u0.1
+
+From: 076XXXXXX<sip:0762757666@vssOTF012.cablecom.net:5060;user=phone>;tag=1680239575
+
+To: 608<sip:0442296008@cableXXX:5060;user=phone>;tag=BA4F3C-6D2
+
+Date: Mon, 24 Feb 2014 12:06:50 GMT
+
+Call-ID: 7692dde2-11ccfac8-1ce04e37-1bb8@cableXXX
+
+CSeq: 1 INVITE
+Allow-Events: telephone-event
+
+Server: Cisco-SIPGateway/IOS-12.x
+
+Diversion: ;reason=no-answer;counter=1
+
+Contact: <sip:612@192.168.x.x>
+
+Content-Length: 0
+
+
+
+http://voiceonbits.com/tag/302-moved-temporarily-sip-refer-sip-call-forward-call-manager-express-cme-transfer/
